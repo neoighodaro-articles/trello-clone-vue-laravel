@@ -51,23 +51,23 @@
                     name: "new tasks",
                     order: this.categories[id].tasks.length,
                     category_id : category_id
-                  })
-                  .then((response) => {
+                })
+                .then((response) => {
                     this.categories[id].tasks.push(response.data.data)
-                  })
-                  .catch(function (error) {
+                })
+                .catch(function (error) {
                     console.log(error);
-                  });
+                })
             },
             loadTasks(){
                 this.categories.map( (category) => {
                     axios.get(`api/category/${category.id}/tasks`)
-                        .then((response) => {
-                            category.tasks = response.data
-                        })
-                        .catch(function (error) {
-                            console.log(error)
-                        }); 
+                    .then((response) => {
+                        category.tasks = response.data
+                    })
+                    .catch(function (error) {
+                        console.log(error)
+                    }) 
                 })
             },
             changeCategory(data){
@@ -82,26 +82,14 @@
                     axios.patch(`api/task/${task_id}`, {
                         order : task_order,
                         category_id : category_id
-                      })
-                      .then((response) => {
-                        console.log(response)
-                      })
-                      .catch(function (error) {
-                        console.log(error);
-                      });
+                    })
                 }
             },
             endEditing(task) {
                 this.editingTask = null
                 axios.patch(`api/task/${task.id}`, {
                     name: task.name
-                  })
-                  .then((response) => {
-                    console.log(response)
-                  })
-                  .catch(function (error) {
-                    console.log(error);
-                  });
+                })
             },
             editTask(task){
                 this.editingTask = task
@@ -124,7 +112,7 @@
                 })
                 .catch(function (error) {
                     console.log(error)
-                }); 
+                })
         },
         computed: {
             dragOptions () {

@@ -14,9 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
-
-        return response()->json($categories, 200);
+        return response()->json(Category::all()->toArray());
     }
 
     /**
@@ -27,18 +25,13 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $category = new Category([
-            'name' => $request->name
-        ]);
-
-        $status = $category->save();
-
-        $data = [
-            'status' => $status,
-            'message'=> $status ? 'Category Created' : 'Error Creating Category'
-        ];
         
-        return response()->json($data, 200);
+        $category = Category::create($request->only('name'));
+
+        return response()->json([
+            'status' => (bool) $category,
+            'message'=> $category ? 'Category Created' : 'Error Creating Category'
+        ]);
     }
 
     /**
@@ -49,7 +42,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return response()->json($category, 200);
+        return response()->json($category);
     }
 
     /**
@@ -60,7 +53,7 @@ class CategoryController extends Controller
      */
     public function tasks(Category $category)
     {
-        return response()->json($category->tasks()->orderBy('order')->get(), 200);
+        return response()->json($category->tasks()->orderBy('order')->get());
     }
 
     /**
@@ -72,17 +65,13 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
-        $status = $category->update([
-            'name' => $request->name
-        ]);
-
-        $data = [
+        
+        $status = $category->update($request->only('name'));
+        
+        return response()->json([
             'status' => $status,
-            'message' => ( $status ) ? 'Category Updated!' : 'Error Updating Category'      
-        ];
-
-        return response()->json($data, 200);
+            'message' => $status ? 'Category Updated!' : 'Error Updating Category'      
+        ]);
     }
 
     /**
@@ -95,11 +84,9 @@ class CategoryController extends Controller
     {
         $status  = $category->delete();
 
-        $data = [
+        return response()->json([
             'status' => $status,
-            'message' => ($status ) ? 'Category Deleted' : 'Error Deleting Category'
-        ];
-
-        return response()->json($data, 200);
+            'message' => $status ? 'Category Deleted' : 'Error Deleting Category'
+        ]);
     }
 }
