@@ -20,14 +20,25 @@ class UserController extends Controller
      */
     public function login()
     {
-        if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
-            $user = Auth::user();
-            $success['token'] = $user->createToken('TrelloClone')->accessToken;
-            $success['name'] = $user->name;
-            return response()->json(['success' => $success], $this->successStatus);
-        } else {
-            return response()->json(['error' => 'Unauthorised'], 401);
+        
+        $credentials = [
+            'email' => $request->get('email'),
+            'password' => $request->get('password'),
+        ];
+        
+        $status = 401;
+        $response = ['error' => 'Unauthorised'];
+        
+        if (Auth::attempt($credentials)) {
+            $status = 200;
+            $response = [
+                'success' => [
+                    'token' => Auth::user()->createToken('TrelloClone')->accessToken
+                ]
+            ];
         }
+        
+        return response()->json($response, $status);
     }
 
     /**

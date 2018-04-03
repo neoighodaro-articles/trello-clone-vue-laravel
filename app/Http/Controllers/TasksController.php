@@ -14,9 +14,7 @@ class TasksController extends Controller
      */
     public function index()
     {
-        $tasks = Task::orderBy('order')->get();
-
-        return response()->json($task, 200);
+        return response()->json(Task::all()->toArray();
     }
 
     /**
@@ -27,22 +25,18 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
-        $task = new Task([
+        
+        $task = Task::create([
             'name' => $request->name,
             'category_id' => $request->category_id,
             'user_id' => $request->user_id,
             'order' => $request->order
         ]);
-
-        $status = $task->save();
-
-        $data = [
-            'status' => $status,
-            'message' => ($status) ? 'Task Created!' : 'Error Creating Task',
-            'data' => $task
-        ];
         
-        return response()->json($data, 200);
+        return response()->json([
+            'status' => (bool) $task,
+            'message' => $task ? 'Task Created!' : 'Error Creating Task'
+        ]);
     }
 
     /**
@@ -53,7 +47,7 @@ class TasksController extends Controller
      */
     public function show(Task $task)
     {   
-       return response()->json($task, 200); 
+       return response()->json($task); 
     }
 
     /**
@@ -65,30 +59,16 @@ class TasksController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        if($request->isMethod('PUT'))
-        {
-            $status = $task->update([
-                'name' => $request->name,
-                'category_id' => $request->category_id,
-                'user_id' => $request->user_id,
-                'order' => $request->order
-            ]);
-        }else
-        {
-            $status = $task->update([
-                'name' => $request->name ?: $task->name,
-                'category_id' => $request->category_id ?: $task->category_id,
-                'user_id' => $request->user_id ?: $task->user_id,
-                'order' => $request->order ?: $task->order
-            ]);
-        }
-
-        $data = [
+        
+        $status = $task->update(
+            $request->only(['name', 'category_id', 'user_id', 'order'])
+        );
+        
+        return response()->json([
             'status' => $status,
-            'message' => ($status) ? 'Task Updated!' : 'Error Updating Task'
-        ];
+            'message' => $status ? 'Task Updated!' : 'Error Updating Task'
+        ]);
 
-        return response()->json($data, 200);
     }
 
     /**
@@ -99,13 +79,12 @@ class TasksController extends Controller
      */
     public function destroy(Task $task)
     {
+        
         $status = $task->delete();
-
-        $data = [
+        
+        return response()->json([
             'status' => $status,
-            'message' => ($status) ? 'Task Deleted!' : 'Error Deleting Task'
-        ];
-
-        return response()->json($data, 200);
+            'message' => $status ? 'Task Deleted!' : 'Error Deleting Task'
+        ]);
     }
 }
