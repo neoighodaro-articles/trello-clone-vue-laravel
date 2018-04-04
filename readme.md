@@ -54,11 +54,6 @@ Install Laravel Passport
 $ php artisan passport:install
 ```
 
-Seed the application database to create the categories we use for the application
-```
-$ php artisan db:seed
-```
-
 ### Build the appliction
 Before you can successfully run this application, you need to build all your JavaScript assets, so that the Vue components can render. Run the command:
 ```
