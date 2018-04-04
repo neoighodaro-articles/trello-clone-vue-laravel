@@ -54,6 +54,12 @@ Install Laravel Passport
 $ php artisan passport:install
 ```
 
+### Build the appliction
+Before you can successfully run this application, you need to build all your JavaScript assets, so that the Vue components can render. Run the command:
+```
+$ npm run prod
+```
+
 ### Run the application
 ```
 $ php artisan serve

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -15,7 +15,7 @@ class Category extends Model
     ];
 
     public function tasks(){
-        return $this->hasMany('App\Models\Task');
+        return $this->hasMany('App\Task');
     }
 
 }

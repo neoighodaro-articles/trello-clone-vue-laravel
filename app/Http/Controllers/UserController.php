@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 
@@ -18,7 +18,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function login()
+    public function login(Request $request)
     {
         
         $credentials = [
@@ -33,6 +33,7 @@ class UserController extends Controller
             $status = 200;
             $response = [
                 'success' => [
+                    'name'  => Auth::user()->name,
                     'token' => Auth::user()->createToken('TrelloClone')->accessToken
                 ]
             ];
