@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Task;
+use App\Task;
 
 class TasksController extends Controller
 {
@@ -14,7 +14,7 @@ class TasksController extends Controller
      */
     public function index()
     {
-        return response()->json(Task::all()->toArray();
+        return response()->json(Task::all()->toArray());
     }
 
     /**
@@ -35,6 +35,7 @@ class TasksController extends Controller
         
         return response()->json([
             'status' => (bool) $task,
+            'data'   => $task,
             'message' => $task ? 'Task Created!' : 'Error Creating Task'
         ]);
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,10 +14,10 @@ class Task extends Model
     ];
 
     public function category(){
-        return $this->hasOne('App\Models\Category');
+        return $this->hasOne('App\Category');
     }
 
     public function user(){
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo('App\User');
     }
 }

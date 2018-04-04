@@ -53,6 +53,7 @@
                     category_id : category_id
                 })
                 .then((response) => {
+                    console.log(response)
                     this.categories[id].tasks.push(response.data.data)
                 })
                 .catch(function (error) {
