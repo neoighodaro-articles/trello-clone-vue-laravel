@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-class SpaController extends Controller
+class SinglePageController extends Controller
 {
     public function index()
     {

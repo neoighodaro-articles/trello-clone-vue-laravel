@@ -8,16 +8,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Task extends Model
 {
     use SoftDeletes;
-    
-    protected $fillable = [
-        'name', 'category_id', 'user_id', 'order'
-    ];
 
-    public function category(){
-        return $this->hasOne('App\Category');
+    protected $fillable = ['name', 'category_id', 'user_id', 'order'];
+
+    public function category()
+    {
+        return $this->hasOne(Category::class);
     }
 
-    public function user(){
-        return $this->belongsTo('App\User');
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

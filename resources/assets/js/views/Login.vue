@@ -1,5 +1,6 @@
+
 <template>
-	<div class="container">
+    <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card card-default">
@@ -37,6 +38,8 @@
         </div>
     </div>
 </template>
+
+
 <script>
     export default {
         data(){
@@ -48,35 +51,32 @@
         methods : {
             handleSubmit(e){
                 e.preventDefault()
-                if(this.password.length > 0)
-                {
+
+                if (this.password.length > 0) {
                     axios.post('api/login', {
                         email: this.email,
                         password: this.password
                       })
-                      .then((response) => {
-                        console.log(response.data)
+                      .then(response => {
                         localStorage.setItem('user',response.data.success.name)
                         localStorage.setItem('jwt',response.data.success.token)
-                        if(localStorage.getItem('jwt') != null){
+
+                        if (localStorage.getItem('jwt') != null){
                             this.$router.go('/board')
                         }
                       })
                       .catch(function (error) {
-                        console.log(error);
+                        console.error(error);
                       });
                 }
             }
         },
-        beforeRouteEnter (to, from, next) { 
-            if(localStorage.getItem('jwt'))
-            {
+        beforeRouteEnter (to, from, next) {
+            if (localStorage.getItem('jwt')) {
                 return next('board');
             }
-            else 
-            {
-                next();
-            }
+
+            next();
         }
     }
 </script>

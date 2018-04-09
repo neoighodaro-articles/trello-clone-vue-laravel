@@ -1,5 +1,5 @@
 <template>
-	<div class="container">
+    <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card card-default">
@@ -53,6 +53,7 @@
         </div>
     </div>
 </template>
+
 <script>
     export default {
         data(){
@@ -64,9 +65,10 @@
             }
         },
         methods : {
-            handleSubmit(e){
+            handleSubmit(e) {
                 e.preventDefault()
-                if(this.password === this.password_confirmation && this.password.length > 0)
+
+                if (this.password === this.password_confirmation && this.password.length > 0)
                 {
                     axios.post('api/register', {
                         name: this.name,
@@ -74,35 +76,31 @@
                         password: this.password,
                         c_password : this.password_confirmation
                       })
-                      .then((response) => {
-                        console.log(response.data)
+                      .then(response => {
                         localStorage.setItem('user',response.data.success.name)
                         localStorage.setItem('jwt',response.data.success.token)
-                        if(localStorage.getItem('jwt') != null){
+
+                        if (localStorage.getItem('jwt') != null){
                             this.$router.go('/board')
                         }
                       })
-                      .catch(function (error) {
-                        console.log(error);
+                      .catch(error => {
+                        console.error(error);
                       });
-                }else 
-                {
+                } else {
                     this.password = ""
                     this.passwordConfirm = ""
-                    alert('Passwords do not match')
-                    return
+
+                    return alert('Passwords do not match')
                 }
             }
         },
-        beforeRouteEnter (to, from, next) { 
-            if(localStorage.getItem('jwt'))
-            {
+        beforeRouteEnter (to, from, next) {
+            if (localStorage.getItem('jwt')) {
                 return next('board');
             }
-            else 
-            {
-                next();
-            }
+
+            next();
         }
     }
 </script>

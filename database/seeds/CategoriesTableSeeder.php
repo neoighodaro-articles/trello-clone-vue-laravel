@@ -1,25 +1,16 @@
 <?php
 
+use App\Category;
 use Illuminate\Database\Seeder;
 
 class CategoriesTableSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
-        $categories = [
-        	['name' => "Ideas"],
-        	['name' => "On Going"],
-        	['name' => "Completed"]
-        ];
+        $categories = ['Ideas', 'On Going', 'Completed'];
 
-        foreach ($categories as $category) 
-        {
-        	\App\Category::create($category);
+        foreach ($categories as $category) {
+            Category::create(['name' => $category]);
         }
     }
 }

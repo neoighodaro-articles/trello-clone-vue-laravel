@@ -7,15 +7,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Category extends Model
 {
-    //
     use SoftDeletes;
 
-    protected $fillable = [
-        'name'
-    ];
+    protected $fillable = ['name'];
 
-    public function tasks(){
-        return $this->hasMany('App\Task');
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
     }
-
 }

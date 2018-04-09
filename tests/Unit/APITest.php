@@ -1,87 +1,43 @@
 <?php
+
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class APITest extends TestCase
 {
-    /**
-     * This function tests the creation of a new user
-     *
-     * @return void
-     */
     public function testUserCreation()
     {
         $response = $this->json('POST', '/api/register', [
-            'name' => 'neo3',
-            'email' => 'neo4@trelloclone.com',
+            'name' => 'Demo User',
+            'email' => str_random(10) . '@demo.com',
             'password' => '12345',
-            'c_password' => '12345'
         ]);
-        $response->assertStatus(200)
-            ->assertJsonStructure([
-                'success' => [
-                    'token',
-                    'name'
-                ]
-            ]);
+
+        $response->assertStatus(200)->assertJsonStructure([
+            'success' => ['token', 'name']
+        ]);
     }
 
-
-    /**
-     * This function tests logging in an existing user
-     *
-     * @return void
-     */
     public function testUserLogin()
     {
         $response = $this->json('POST', '/api/login', [
-            'email' => 'neo3@trelloclone.com',
-            'password' => '12345'
-        ]);
-        $response->assertStatus(200)
-            ->assertJsonStructure([
-                'success' => [
-                    'token',
-                    'name'
-                ]
-            ]);
-    }
-
-
-    /**
-     * This function tests the creation of a new category resource
-     *
-     * @return void
-     */
-    public function testCategoryCreation()
-    {
-        $this->withoutMiddleware();
-        $response = $this->json('POST', '/api/category', [
-            'name' => 'Tested',
+            'email' => 'demo@demo.com',
+            'password' => 'secret'
         ]);
 
-        $response->assertStatus(200)
-            ->assertJson([
-                'status' => true,
-                'message' => 'Category Created'
-            ]);
+        $response->assertStatus(200)->assertJsonStructure([
+            'success' => ['token']
+        ]);
     }
 
-
-    /**
-     * This function tests retreiving of all categories
-     *
-     * @return void
-     */
     public function testCategoryFetch()
     {
-        $this->withoutMiddleware();
-        $response = $this->json('GET', '/api/category');
-        $response->assertStatus(200)
-            ->assertJsonStructure([
+        $user = \App\User::find(1);
+
+        $response = $this->actingAs($user, 'api')
+            ->json('GET', '/api/category')
+            ->assertStatus(200)->assertJsonStructure([
                 '*' => [
                     'id',
                     'name',
@@ -92,22 +48,31 @@ class APITest extends TestCase
             ]);
     }
 
-
-    /**
-     * This function tests the deletion for a single category resource
-     *
-     * @return void
-     */
-    public function testCategoryDeletion()
+    public function testCategoryCreation()
     {
         $this->withoutMiddleware();
-        $response = $this->json('DELETE', '/api/category/1');
-        $response->assertStatus(200)
-            ->assertJson([
+
+        $response = $this->json('POST', '/api/category', [
+            'name' => str_random(10),
+        ]);
+
+        $response->assertStatus(200)->assertJson([
+            'status' => true,
+            'message' => 'Category Created'
+        ]);
+    }
+
+    public function testCategoryDeletion()
+    {
+        $user = \App\User::find(1);
+
+        $category = \App\Category::create(['name' => 'To be deleted']);
+
+        $response = $this->actingAs($user, 'api')
+            ->json('DELETE', "/api/category/{$category->id}")
+            ->assertStatus(200)->assertJson([
                 'status' => true,
                 'message' => 'Category Deleted'
             ]);
     }
-
-
 }
