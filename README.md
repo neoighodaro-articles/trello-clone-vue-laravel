@@ -13,7 +13,7 @@ What things you need to install the software.
 * Laravel CLI.
 * Laravel Valet (optional).
 * A webserver like Nginx or Apache.
-* A Node Package Manager ( npm or yarn )
+* A Node Package Manager ( npm or yarn ).
 
 ### Install
 Clone the git repository on your computer
@@ -40,11 +40,21 @@ $ cp .env.example .env
 $ php artisan key:generate
 ```
 
+- Install Passport
+```
+$ php artisan passport:install
+```
+
 - Add your database credentials to the necessary `env` fields
 
 - Migrate the application
 ```
 $ php artisan migrate
+```
+
+- Seed Database
+```
+php artisan db:seed
 ```
 
 - Install node modules
